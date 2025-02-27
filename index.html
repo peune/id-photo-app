@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ID Photo Cropper</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>ID Photo Cropper</h1>
+
+    <label for="id-size">Select ID Photo Size:</label>
+    <select id="id-size">
+        <option value="1x1">1" × 1"</option>
+        <option value="1x1.5">1" × 1.5"</option>
+        <option value="2x2">2" × 2"</option>
+        <option value="2.5x3" selected>2.5" × 3"</option>
+    </select>
+
+    <label for="print-size">Select Print Paper Size:</label>
+    <select id="print-size">
+        <option value="4x6">4" × 6"</option>
+        <option value="5x7">5" × 7"</option>
+        <option value="A4">A4</option>
+    </select>
+
+    <label for="dpi">DPI:</label>
+    <input type="number" id="dpi" value="300">
+
+    <input type="file" id="upload" accept="image/*">
+    <div class="crop-container">
+        <img id="image" src="" alt="Upload an image">
+    </div>
+
+    <button id="crop">Crop & Generate Print Layout</button>
+    <button id="download-png">Download as PNG</button>
+    <button id="download-jpg">Download as JPG</button>
+    
+    <canvas id="print-layout"></canvas>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
