@@ -91,8 +91,8 @@ cropButton.addEventListener("click", function () {
 
     const borderSize = Math.round((3 / 25.4) * dpi); // Convert 3mm to pixels
 
-    num1 = Math.round(paperHeightPx / (idHeightPx + borderSize)) * Math.round(paperWidthPx / (idWidthPx + borderSize))
-    num2 = Math.round(paperWidthPx / (idHeightPx + borderSize)) * Math.round(paperHeightPx / (idWidthPx + borderSize))
+    num1 = Math.floor(paperHeightPx / (idHeightPx + borderSize)) * Math.floor(paperWidthPx / (idWidthPx + borderSize))
+    num2 = Math.floor(paperWidthPx / (idHeightPx + borderSize)) * Math.floor(paperHeightPx / (idWidthPx + borderSize))
 
 
     logDebugMessage(`${num1} VS ${num2}`);
