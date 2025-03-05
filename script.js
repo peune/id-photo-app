@@ -107,8 +107,8 @@ cropButton.addEventListener("click", function () {
         ctx.drawImage(croppedCanvas, x, y, idWidthPx, idHeightPx);
         x += idWidthPx+borderSize;
         if (x + idWidthPx > paperWidthPx) {
-            x = 0;
-            y += idHeightPx๙borderSize;
+            x = borderSize;
+            y += idHeightPx+borderSize;
         }
     }
 });
