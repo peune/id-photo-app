@@ -88,9 +88,9 @@ upload.addEventListener("change", function (event) {
 idSizeSelect.addEventListener("change", updateAspectRatio);
 
 // ** Function to generate a printable layout **
-cropButton.addEventListener("click", async function () {
+cropButton.addEventListener("click", function () {
     if (!cropper) return;
-    
+
     const dpi = parseInt(dpiInput.value);
     const cmToInch = 2.54;
 
@@ -99,36 +99,51 @@ cropButton.addEventListener("click", async function () {
     const idHeightPx = Math.round((idHeight / cmToInch) * dpi);
 
     // Crop the image
-    const croppedFaceCanvas = cropper.getCroppedCanvas({
+    const croppedCanvas = cropper.getCroppedCanvas({
         width: idWidthPx,
         height: idHeightPx,
     });
 
-    // Get user inputs
-    const idPhotoSize = document.getElementById("idPhotoSize").value.split("x"); // e.g., "2.5x3.0"
-    const printSize = document.getElementById("printSize").value.split("x"); // e.g., "4x6"
+    // Get print paper size
+    let paperWidthInches, paperHeightInches;
+    switch (printSizeSelect.value) {
+        case "4x6":
+            paperWidthInches = 4;
+            paperHeightInches = 6;
+            break;
+        case "5x7":
+            paperWidthInches = 5;
+            paperHeightInches = 7;
+            break;
+        case "A4":
+            paperWidthInches = 8.27;
+            paperHeightInches = 11.69;
+            break;
+    }
 
-    const idPhotoWidthCM = parseFloat(idPhotoSize[0]);
-    const idPhotoHeightCM = parseFloat(idPhotoSize[1]);
-    const printWidthCM = parseFloat(printSize[0]);
-    const printHeightCM = parseFloat(printSize[1]);
+    const paperWidthPx = Math.round(paperWidthInches * dpi);
+    const paperHeightPx = Math.round(paperHeightInches * dpi);
 
-    // Convert ID photo size to pixels for 300 DPI
-    const idPhotoWidth = Math.round((idPhotoWidthCM / 2.54) * dpi); // cm to inches, then to pixels
-    const idPhotoHeight = Math.round((idPhotoHeightCM / 2.54) * dpi);
+    const borderSize = Math.round((5 / 25.4) * dpi); // Convert 5mm to pixels
 
-    // Resize cropped face to ID photo size
-    const resizedCanvas = document.createElement("canvas");
-    resizedCanvas.width = idPhotoWidth;
-    resizedCanvas.height = idPhotoHeight;
-    const resizedCtx = resizedCanvas.getContext("2d");
-    resizedCtx.drawImage(croppedFaceCanvas, 0, 0, idPhotoWidth, idPhotoHeight);
+    // Prepare the print canvas
+    printCanvas.width = paperWidthPx;
+    printCanvas.height = paperHeightPx;
+    const ctx = printCanvas.getContext("2d");
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, paperWidthPx, paperHeightPx);
 
-    // Arrange photos with a white border and display the result
-    const finalCanvas = arrangePhotosOnCanvas(resizedCanvas, idPhotoWidth, idPhotoHeight, printWidthCM, printHeightCM, dpi);
-    document.body.appendChild(finalCanvas);
+    // Arrange ID photos on the canvas
+    let x = borderSize, y = borderSize;
+    while (y + idHeightPx <= paperHeightPx) {
+        ctx.drawImage(croppedCanvas, x, y, idWidthPx, idHeightPx);
+        x += idWidthPx+borderSize;
+        if (x + idWidthPx > paperWidthPx) {
+            x = 0;
+            y += idHeightPx๙borderSize;
+        }
+    }
 });
-
 
 // ** Function to download the generated image as PNG or JPG **
 function downloadImage(format) {
