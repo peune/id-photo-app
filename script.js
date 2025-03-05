@@ -22,44 +22,9 @@ function updateAspectRatio() {
     }
 }
 
-function arrangePhotosOnCanvas(croppedImage, idPhotoWidth, idPhotoHeight, printWidth, printHeight, dpi) {
-    const borderSize = Math.round((5 / 25.4) * dpi); // Convert 5mm to pixels
-
-    // Create a canvas for the 4x6 inch print size
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-
-    const canvasWidth = Math.round(printWidth * dpi);
-    const canvasHeight = Math.round(printHeight * dpi);
-    
-    canvas.width = canvasWidth;
-    canvas.height = canvasHeight;
-
-    // Fill the entire canvas with white background
-    ctx.fillStyle = "white";
-    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-
-    // Calculate how many ID photos fit in rows and columns with borders
-    const totalWidth = idPhotoWidth + borderSize;
-    const totalHeight = idPhotoHeight + borderSize;
-
-    const cols = Math.floor(canvasWidth / totalWidth);
-    const rows = Math.floor(canvasHeight / totalHeight);
-
-    const startX = (canvasWidth - cols * totalWidth + borderSize) / 2; // Center images
-    const startY = (canvasHeight - rows * totalHeight + borderSize) / 2;
-
-    for (let row = 0; row < rows; row++) {
-        for (let col = 0; col < cols; col++) {
-            const x = startX + col * totalWidth;
-            const y = startY + row * totalHeight;
-
-            // Draw cropped ID photo with space for white border
-            ctx.drawImage(croppedImage, x, y, idPhotoWidth, idPhotoHeight);
-        }
-    }
-
-    return canvas;
+function logDebugMessage(message) {
+    const debugConsole = document.getElementById("debugConsole");
+    debugConsole.innerText += message + "\n"; // Append messages
 }
 
 
@@ -124,11 +89,14 @@ cropButton.addEventListener("click", function () {
     const paperWidthPx = Math.round(paperWidthInches * dpi);
     const paperHeightPx = Math.round(paperHeightInches * dpi);
 
-    const borderSize = Math.round((5 / 25.4) * dpi); // Convert 5mm to pixels
+    const borderSize = Math.round((3 / 25.4) * dpi); // Convert 3mm to pixels
 
     // Prepare the print canvas
     printCanvas.width = paperWidthPx;
     printCanvas.height = paperHeightPx;
+
+    logDebugMessage(`ICICIC`);
+
     const ctx = printCanvas.getContext("2d");
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, paperWidthPx, paperHeightPx);
