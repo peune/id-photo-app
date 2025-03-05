@@ -104,6 +104,7 @@ cropButton.addEventListener("click", function () {
     // Arrange ID photos on the canvas
     let x = borderSize, y = borderSize;
     while (y + idHeightPx <= paperHeightPx) {
+        logDebugMessage(`${x} ${y}`);
         ctx.drawImage(croppedCanvas, x, y, idWidthPx, idHeightPx);
         x += idWidthPx+borderSize;
         if (x + idWidthPx > paperWidthPx) {
