@@ -86,8 +86,8 @@ cropButton.addEventListener("click", function () {
             break;
     }
 
-    const paperWidthPx = Math.round(paperWidthInches * dpi);
-    const paperHeightPx = Math.round(paperHeightInches * dpi);
+    let paperWidthPx = Math.round(paperWidthInches * dpi);
+    let paperHeightPx = Math.round(paperHeightInches * dpi);
 
     const borderSize = Math.round((3 / 25.4) * dpi); // Convert 3mm to pixels
 
@@ -98,8 +98,14 @@ cropButton.addEventListener("click", function () {
     b2 = Math.floor(paperHeightPx / (idWidthPx + borderSize))
     num2 = a2 * b2
 
-
     logDebugMessage(`${a1} ${b1} ${num1} VS ${a2} ${b2} ${num2}`);
+
+    if (num2 > num1) {
+        let tmp = paperWidthPx;
+        paperWidthPx = paperHeightPx;
+        paperHeightPx = tmp;
+    }
+
 
     // Prepare the print canvas
     printCanvas.width = paperWidthPx;
